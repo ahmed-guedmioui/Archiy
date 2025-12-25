@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="error_disk_full">Oops, looks like your storage is full!</string>
+    <string name="error_not_found">Couldn\'t find the requested item</string>
+    <string name="error_unknown">Something went wrong</string>
+    <string name="error_bad_request">Bad request</string>
+    <string name="error_request_timeout">Your request has timed out</string>
+    <string name="error_unauthorized">You\'re not authorized</string>
+    <string name="error_forbidden">You\'re not allowed to do that</string>
+    <string name="error_conflict">A conflict happened</string>
+    <string name="error_too_many_requests">You\'ve hit the rate limit</string>
+    <string name="error_no_internet">Unable to connect. Please check your internet connection.</string>
+    <string name="error_payload_too_large">The file you\'ve attached is too large</string>
+    <string name="error_server">Oops, a server-side error happened</string>
+    <string name="error_service_unavailable">Service unavailable, please try again later</string>
+    <string name="error_serialization">Serialization error</string>
+    <string name="error">Error</string>
+    <string name="warning">Warning</string>
+    <string name="ok">OK</string>
+    <string name="user_id_is_missing">Driver id is missing</string>
+</resources>

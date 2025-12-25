@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "317453455236",
+    "project_id": "archiy",
+    "storage_bucket": "archiy.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:317710915236:android:ca7f974b493464dbd7f831",
+        "android_client_info": {
+          "package_name": "com.agapps.archiy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX7H-DuRa7GeBCBL03456btckaz9VcJRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

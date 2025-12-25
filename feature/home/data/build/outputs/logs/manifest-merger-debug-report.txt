@@ -1,0 +1,15 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/ahmedguedmioui/Desktop/Archiy/feature/home/data/src/main/AndroidManifest.xml:2:1-37
+INJECTED from /Users/ahmedguedmioui/Desktop/Archiy/feature/home/data/src/main/AndroidManifest.xml:2:1-37
+	package
+		ADDED from /Users/ahmedguedmioui/Desktop/Archiy/feature/home/data/src/main/AndroidManifest.xml:2:11-34
+		INJECTED from /Users/ahmedguedmioui/Desktop/Archiy/feature/home/data/src/main/AndroidManifest.xml
+uses-sdk
+INJECTED from /Users/ahmedguedmioui/Desktop/Archiy/feature/home/data/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/ahmedguedmioui/Desktop/Archiy/feature/home/data/src/main/AndroidManifest.xml
+INJECTED from /Users/ahmedguedmioui/Desktop/Archiy/feature/home/data/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/ahmedguedmioui/Desktop/Archiy/feature/home/data/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/ahmedguedmioui/Desktop/Archiy/feature/home/data/src/main/AndroidManifest.xml

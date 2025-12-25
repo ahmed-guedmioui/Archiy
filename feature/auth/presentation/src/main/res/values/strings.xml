@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="email">Email</string>
+    <string name="example_email_com">example@email.com</string>
+    <string name="password">Password</string>
+    <string name="enter_a_password">Enter a password</string>
+    <string name="login">Login</string>
+    <string name="back">Back</string>
+    <string name="username_is_empty">Username is empty</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="password_is_empty">Password is empty</string>
+    <string name="user_data_is_missing">Uer data is missing</string>
+    <string name="invalid_credentials">Invalid credentials</string>
+    <string name="register">Register</string>
+    <string name="username">User name</string>
+    <string name="username_example">Alex, Marry, Adam...</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="11">
+      <module name="AlphaRoute.app" target="21" />
+      <module name="AlphaRoute.auth.data" target="21" />
+      <module name="AlphaRoute.auth.presentation" target="21" />
+      <module name="AlphaRoute.core.data" target="21" />
+      <module name="AlphaRoute.core.presentation" target="21" />
+      <module name="AlphaRoute.feature.auth.data" target="21" />
+      <module name="AlphaRoute.feature.auth.presentation" target="21" />
+      <module name="AlphaRoute.feature.home.data" target="21" />
+      <module name="AlphaRoute.feature.home.presentation" target="21" />
+      <module name="AlphaRoute.login.data" target="21" />
+      <module name="AlphaRoute.login.presentation" target="21" />
+      <module name="AlphaRoute.nav-root.api" target="21" />
+      <module name="AlphaRoute.nav-root.impl" target="21" />
+      <module name="AlphaRoute.shared.data" target="21" />
+      <module name="AlphaRoute.shared.domainnn" target="21" />
+      <module name="AlphaRoute.shared.navigation" target="21" />
+      <module name="AlphaRoute.shared.ui" target="21" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
