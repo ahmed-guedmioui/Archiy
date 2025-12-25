@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="no_internet_connection">No internet connection</string>
     <string name="error_disk_full">Oops, looks like your storage is full!</string>
     <string name="error_not_found">Couldn\'t find the requested item</string>
     <string name="error_unknown">Something went wrong</string>
@@ -17,6 +16,6 @@
     <string name="error_serialization">Serialization error</string>
     <string name="error">Error</string>
     <string name="warning">Warning</string>
+    <string name="info">Info</string>
     <string name="ok">OK</string>
-    <string name="user_id_is_missing">Driver id is missing</string>
 </resources>
