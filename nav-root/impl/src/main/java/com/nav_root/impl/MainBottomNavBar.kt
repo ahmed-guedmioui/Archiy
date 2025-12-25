@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -21,7 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.core.presentation.design_system.BottomNavigationItem
 import com.core.presentation.design_system.CoreBottomBar
-import com.home.presentation.home.HomeScreenRoot
+import com.home.presentation.home.HomeNavigation
 
 
 @Composable
@@ -62,9 +63,9 @@ fun <T : Any> MainBottomNavBar(
         }
     ) { paddingValues ->
         Box(
-            modifier = Modifier.padding(
-                bottom = paddingValues.calculateBottomPadding()
-            )
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = paddingValues.calculateBottomPadding())
         ) {
             AnimatedVisibility(
                 visible = selectedItem == 0,
@@ -75,7 +76,7 @@ fun <T : Any> MainBottomNavBar(
                     onItemClick(0)
                 }
 
-                HomeScreenRoot()
+                HomeNavigation()
             }
 
             AnimatedVisibility(

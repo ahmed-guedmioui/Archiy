@@ -33,7 +33,7 @@ import com.core.presentation.theme.theme.CoreTheme
 fun CoreTopBar(
     modifier: Modifier = Modifier,
     titleText: String? = null,
-    titleFontWeight: FontWeight = FontWeight.SemiBold,
+    titleFontWeight: FontWeight = FontWeight.Medium,
     titleContent: (@Composable () -> Unit)? = null,
     navigationIcon: ImageVector? = null,
     navigationIconContent: (@Composable () -> Unit)? = null,
@@ -108,7 +108,7 @@ fun CoreTopBar(
 fun CoreMediumTopBar(
     modifier: Modifier = Modifier,
     titleText: String? = null,
-    titleFontWeight: FontWeight = FontWeight.SemiBold,
+    titleFontWeight: FontWeight = FontWeight.Medium,
     titleContent: (@Composable () -> Unit)? = null,
     navigationIcon: ImageVector? = null,
     navigationIconContent: (@Composable () -> Unit)? = null,
@@ -183,7 +183,7 @@ fun CoreMediumTopBar(
 fun CoreLargeTopBar(
     modifier: Modifier = Modifier,
     titleText: String? = null,
-    titleFontWeight: FontWeight = FontWeight.SemiBold,
+    titleFontWeight: FontWeight = FontWeight.Medium,
     titleContent: (@Composable () -> Unit)? = null,
     navigationIcon: ImageVector? = null,
     navigationIconContent: (@Composable () -> Unit)? = null,

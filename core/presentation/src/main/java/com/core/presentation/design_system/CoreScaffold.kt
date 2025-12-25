@@ -3,7 +3,6 @@ package com.core.presentation.design_system
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
@@ -40,8 +39,6 @@ fun CoreScaffold(
         rememberTopAppBarState()
     ),
     withScrollBehavior: Boolean = true,
-    withPullToRefresh: Boolean = true,
-    withBottomPadding: Boolean = true,
     containerColor: Color = MaterialTheme.colorScheme.background,
     showTopBarHorizontalDivider: Boolean = false,
     snackbarHost: @Composable () -> Unit = {},
@@ -50,7 +47,7 @@ fun CoreScaffold(
     topBar: @Composable (TopAppBarScrollBehavior) -> Unit = {},
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     bottomBar: @Composable () -> Unit = {},
-    onPullToRefresh: () -> Unit = {},
+    onPullToRefresh: (() -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit
 ) {
 
@@ -58,7 +55,7 @@ fun CoreScaffold(
         if (withScrollBehavior) modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         else modifier
 
-    if (withPullToRefresh) {
+    if (onPullToRefresh != null) {
         val refreshScope = rememberCoroutineScope()
         var refreshing by remember { mutableStateOf(false) }
 
@@ -89,9 +86,6 @@ fun CoreScaffold(
             floatingActionButtonPosition = floatingActionButtonPosition
         ) { padding ->
             PullToRefreshBox(
-                modifier = Modifier
-                    .padding(top = padding.calculateTopPadding())
-                    .padding(bottom = if (withBottomPadding) padding.calculateBottomPadding() else 0.dp),
                 isRefreshing = refreshing,
                 state = state,
                 onRefresh = ::refresh,
@@ -110,7 +104,7 @@ fun CoreScaffold(
                     }
                 }
             ) {
-                content(PaddingValues())
+                content(padding)
             }
         }
     } else {

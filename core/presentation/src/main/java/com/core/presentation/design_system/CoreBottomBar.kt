@@ -27,11 +27,13 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CoreBottomBar(
+    modifier: Modifier = Modifier,
     items: List<BottomNavigationItem>,
     selectedItem: Int,
     onItemClick: (Int) -> Unit,
 ) {
     NavigationBar(
+        modifier = modifier,
         containerColor = MaterialTheme.colorScheme.background,
         windowInsets = NavigationBarDefaults.windowInsets
     ) {

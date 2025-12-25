@@ -12,6 +12,7 @@ import com.core.domain.model.response.Response
 import com.core.domain.util.result.DataError
 import com.core.domain.util.result.Result
 import com.core.domain.util.result.map
+import kotlinx.coroutines.delay
 
 class KtorAuthRepository(
     private val httpClient: KtorHttpClient
@@ -21,6 +22,9 @@ class KtorAuthRepository(
         email: String,
         password: String
     ): Result<Response<LoginData>, DataError.Remote> {
+        // Simulate network delay
+        delay(1000)
+
         // Replace this with a real login request
         return Result.Success(
             ResponseDto(
@@ -51,6 +55,9 @@ class KtorAuthRepository(
         email: String,
         password: String
     ): Result<Response<LoginData>, DataError.Remote> {
+        // Simulate network delay
+        delay(1000)
+
         // Replace this with a real register request
         return Result.Success(
             ResponseDto(
