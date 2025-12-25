@@ -7,6 +7,9 @@ android {
 }
 
 dependencies {
+    // Nav api
+    implementation(projects.navRoot.api)
+
     // Core domain
     implementation(projects.core.domain)
 
@@ -15,7 +18,4 @@ dependencies {
 
     // Home domain
     implementation(projects.feature.home.domain)
-
-    // Home data
-    implementation(projects.feature.home.data)
 }

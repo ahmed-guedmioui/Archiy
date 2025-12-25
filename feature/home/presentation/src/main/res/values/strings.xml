@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_items_found">No items found</string>
+    <string name="item_not_found">Item not found</string>
+    <string name="item_details">Item details</string>
+</resources>
