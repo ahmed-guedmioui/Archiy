@@ -58,15 +58,24 @@ The project is organized into feature-based and layer-based modules:
 ```
 Archiy/
 ├── app/                          # Main application module
-│   └── src/main/java/com/core/app/
+│   └── src/main/java/com/app/
 │       ├── App.kt               # Application class (DI setup)
+│       ├── di/
+│       │   └── AppModule.kt    # App-level DI module
 │       └── presentation/
-│           └── MainActivity.kt  # Entry point
+│           ├── MainActivity.kt  # Entry point
+│           ├── MainViewModel.kt
+│           ├── MainState.kt
+│           ├── MainAction.kt
+│           └── MainEvent.kt
 │
 ├── core/                         # Core modules (shared across features)
 │   ├── data/                     # Data layer implementation
 │   │   ├── client/               # HTTP client, local storage
+│   │   │   ├── http/             # Ktor HTTP client
+│   │   │   └── local_storage/    # DataStore implementation
 │   │   ├── service/              # Service implementations
+│   │   ├── dto/                  # Data Transfer Objects
 │   │   └── di/                   # Dependency injection modules
 │   │
 │   ├── domain/                   # Domain layer (pure Kotlin)
@@ -81,13 +90,20 @@ Archiy/
 │       └── util/                 # UI utilities
 │
 ├── feature/                       # Feature modules
-│   └── auth/                     # Authentication feature
-│       ├── data/                  # Auth data layer
-│       ├── domain/                # Auth domain layer
-│       └── presentation/          # Auth UI
+│   ├── auth/                     # Authentication feature
+│   │   ├── data/                 # Auth data layer
+│   │   ├── domain/               # Auth domain layer
+│   │   └── presentation/         # Auth UI
+│   │
+│   └── home/                     # Home feature
+│       ├── data/                 # Home data layer
+│       ├── domain/               # Home domain layer
+│       └── presentation/          # Home UI
 │
-└── navigation_root/               # Navigation module
-    └── NavigationRoot.kt          # Root navigation composable
+└── nav-root/                      # Navigation module
+    ├── api/                       # Navigation API
+    └── impl/                      # Navigation implementation
+        └── NavRoot.kt             # Root navigation composable
 ```
 
 ## 📦 Module Overview
@@ -96,9 +112,10 @@ Archiy/
 - **Purpose**: Application entry point
 - **Responsibilities**:
   - Initialize dependency injection (Koin)
-  - Setup Firebase
-  - Create notification channels
+  - Setup Firebase (Analytics, Crashlytics, Config, Messaging)
+  - Create notification channels (messages for driver, location)
   - Configure application-level settings
+  - Handle splash screen logic
 
 ### Core Modules
 
@@ -106,8 +123,8 @@ Archiy/
 - **Type**: Pure Kotlin (JVM) module
 - **Purpose**: Business logic and domain models
 - **Contains**:
-  - Domain models (User, ApiResponse, etc.)
-  - Service interfaces (SessionService, AuthService, etc.)
+  - Domain models (User, Response, ArchiyFile, etc.)
+  - Service interfaces (SessionService, etc.)
   - Client interfaces (LocalStorageClient, etc.)
   - Utilities (Result type, Error types, Logger)
 - **Dependencies**: None (pure Kotlin)
@@ -118,7 +135,7 @@ Archiy/
 - **Contains**:
   - HTTP client (KtorHttpClient)
   - Local storage (DataStoreLocalStorageClient)
-  - Service implementations
+  - Service implementations (LocalStorageSessionService)
   - DTOs and mappers
 - **Dependencies**: `core:domain`
 
@@ -126,7 +143,7 @@ Archiy/
 - **Type**: Android library module
 - **Purpose**: Shared UI components and utilities
 - **Contains**:
-  - Design system components (CoreButton, CoreTextField, etc.)
+  - Design system components (CoreButton, CoreTextField, CorePasswordTextField, etc.)
   - Theme configuration
   - UI utilities (error handling, event observation)
 - **Dependencies**: `core:domain`
@@ -137,25 +154,42 @@ Archiy/
 Feature modules follow the same three-layer structure:
 
 - **`feature:auth:domain`**
-  - Use cases (LoginUseCase, CheckCanLoginUseCase)
-  - Domain models (LoginResponse)
-  - Service interfaces (AuthService)
+  - Use cases (LoginUseCase, RegisterUseCase, CheckCanLoginUseCase, CheckCanRegisterUseCase)
+  - Domain models (LoginData)
+  - Service interfaces (EmailValidatorService, AuthRepository)
   - **Dependencies**: `core:domain`
 
 - **`feature:auth:data`**
-  - Service implementations (KtorAuthService)
+  - Service implementations (KtorAuthService, AndroidEmailValidatorService)
   - DTOs and mappers
   - **Dependencies**: `core:data`, `core:domain`, `feature:auth:domain`
 
 - **`feature:auth:presentation`**
-  - ViewModels (LoginViewModel, EasyLoginViewModel)
-  - Compose screens (LoginScreen, EasyLoginScreen)
+  - ViewModels (LoginViewModel, RegisterViewModel)
+  - Compose screens (LoginScreen, RegisterScreen)
   - Navigation (AuthNavigation)
   - **Dependencies**: `core:presentation`, `core:domain`, `feature:auth:domain`
 
-### Navigation Module (`navigation_root/`)
+#### `feature:home`
+- **`feature:home:domain`**
+  - Use cases and domain models for home feature
+  - **Dependencies**: `core:domain`
+
+- **`feature:home:data`**
+  - Service implementations and DTOs
+  - **Dependencies**: `core:data`, `core:domain`, `feature:home:domain`
+
+- **`feature:home:presentation`**
+  - ViewModels (HomeViewModel)
+  - Compose screens (HomeScreen)
+  - **Dependencies**: `core:presentation`, `core:domain`, `feature:home:domain`
+
+### Navigation Module (`nav-root/`)
 - **Purpose**: Root navigation setup
-- **Contains**: Navigation graph and route definitions
+- **Contains**: 
+  - Navigation graph and route definitions
+  - Main bottom navigation bar
+  - Route definitions (Auth, Main, Home)
 
 ## 🔄 Data Flow
 
@@ -173,7 +207,7 @@ User Action
          ▼
 ┌─────────────────┐
 │   ViewModel     │
-│  (State/Events) │
+│ (State/Actions) │
 └────────┬────────┘
          │ invoke()
          ▼
@@ -183,10 +217,9 @@ User Action
 └────────┬────────┘
          │ call()
          ▼
-┌─────────────────┐
-│    Service      │
-│  (Repository)   │
-└────────┬────────┘
+┌────────────────────────┐
+│   Service/Repository   │
+└────────┬───────────────┘
          │
          ├──► HTTP Client (Remote)
          │
@@ -198,9 +231,9 @@ User Action
 1. **User enters credentials** → `LoginScreen` collects input
 2. **User taps login** → `LoginScreen` calls `viewModel.onAction(LoginAction.OnLogin)`
 3. **ViewModel** → Calls `loginUseCase.invoke(email, password)`
-4. **UseCase** → Validates input, calls `authService.login(email, password)`
+4. **UseCase** → Validates input, calls `authRepository.login(email, password)`
 5. **Service** → Makes HTTP request via `KtorHttpClient`
-6. **Response** → Returns `Result<LoginResponse, DataError>`
+6. **Response** → Returns `Result<Response<LoginData>, DataError>`
 7. **UseCase** → Processes response, saves session if successful
 8. **ViewModel** → Updates state and emits events
 9. **UI** → Observes state/events and updates accordingly
@@ -212,16 +245,31 @@ The project uses **Koin** for dependency injection. Modules are organized by lay
 ### Core Modules
 
 **`coreDataModule`** (`core:data/di/CoreDataModule.kt`)
-- HTTP client setup
-- Local storage client
-- Session service
+- HTTP client setup (KtorHttpClient)
+- Local storage client (DataStoreLocalStorageClient)
+- Session service (LocalStorageSessionService)
 
-**`authDataModule`** (`feature:auth:data/di/AuthDataModule.kt`)
+**`corePresentationModule`** (`core:presentation/di/`)
+- Shared presentation components
+
+**`appModule`** (`app/di/AppModule.kt`)
+- App-level dependencies
+
+### Feature Modules
+
+**`authDataModule`** (`feature:auth:data/di/`)
 - Auth service implementation
 - Email validator
 
-**`authPresentationModule`** (`feature:auth:presentation/di/authPresentationModule.kt`)
+**`authPresentationModule`** (`feature:auth:presentation/di/`)
 - Use cases
+- ViewModels
+
+**`homeDataModule`** (`feature:home:data/di/`)
+- Home service implementations
+
+**`homePresentationModule`** (`feature:home:presentation/di/`)
+- Home use cases
 - ViewModels
 
 ### Initialization
@@ -232,9 +280,13 @@ Dependency injection is initialized in `App.kt`:
 startKoin {
     androidContext(this@App)
     modules(
+        appModule,
         coreDataModule,
+        corePresentationModule,
         authDataModule,
         authPresentationModule,
+        homeDataModule,
+        homePresentationModule,
     )
 }
 ```
@@ -275,7 +327,9 @@ sealed interface Result<out D, out E : Error> {
 ### Error Flow
 
 ```
-Service → Result<Data, DataError>
+Clinet → Result<Data, DataError>
+
+Repository/Service → Result<DomainModel, Error>
     │
     ▼
 UseCase → Result<DomainModel, Error>
@@ -284,22 +338,12 @@ UseCase → Result<DomainModel, Error>
 ViewModel → Converts to UiText
     │
     ▼
-UI → Displays error via Toast/Alert
+UI → Displays error via Dialog/Toast
 ```
 
 ### Error Mapping
 
-Errors are mapped to user-friendly messages in `DataErrorToUiText.kt`:
-
-```kotlin
-fun DataError.toUiText(): UiText {
-    return when(this) {
-        DataError.Remote.NO_INTERNET -> UiText.Resource(R.string.error_no_internet)
-        DataError.Remote.UNAUTHORIZED -> UiText.Resource(R.string.error_unauthorized)
-        // ...
-    }
-}
-```
+Errors are mapped to user-friendly messages in ViewModels and displayed through error dialogs or toasts.
 
 ### Event-Based Error Display
 
@@ -318,7 +362,7 @@ UI observes events:
 ObserveAsEvent(viewModel.event) { event ->
     when (event) {
         is LoginEvent.OnError -> {
-            errorToast(event.error.asString(context), context)
+            errorDialog(event.error.asString(context))
         }
         LoginEvent.OnSuccess -> {
             onLoggedIn()
@@ -483,9 +527,13 @@ val profilePresentationModule = module {
 startKoin {
     androidContext(this@App)
     modules(
+        appModule,
         coreDataModule,
+        corePresentationModule,
         authDataModule,
         authPresentationModule,
+        homeDataModule,
+        homePresentationModule,
         profileDataModule,  // Add this
         profilePresentationModule,  // Add this
     )
@@ -494,7 +542,7 @@ startKoin {
 
 ### 7. Add Navigation Route
 
-**`navigation_root/Route.kt`**
+**`nav-root/impl/Route.kt`**
 
 ```kotlin
 @Serializable
@@ -507,32 +555,26 @@ sealed interface Route : NavKey {
 
 ## 🔧 Build & Setup
 
-### Prerequisites
-
-- Android Studio Hedgehog or later
-- JDK 11 or later
-- Android SDK (minSdk: 26, targetSdk: 36)
-
 ### Setup
 
 1. Clone the repository
 2. Open in Android Studio
 3. Sync Gradle files
-4. Configure `local.properties` if needed
-5. Build and run
+4. Build and run
 
 ### Build Variants
 
-The project supports multiple build variants (configured in `app/build.gradle.kts`):
-- `localDebug`
+The project supports multiple build variants:
 - `stageDebug`
+- `prodDebug`
 
 ### Version Management
 
 Version information is managed in `gradle/libs.versions.toml`:
 - `versionMajor = "1"`
-- `versionMinor = "6"`
-- `versionPatch = "59"`
+- `versionMinor = "0"`
+- `versionPatch = "0"`
+- `applicationId = "com.agapps.archiy"`
 
 ## 🛠️ Technologies
 
@@ -555,17 +597,15 @@ Version information is managed in `gradle/libs.versions.toml`:
 
 ### Data Persistence
 - **DataStore Preferences**: Local storage
-- **Android Keystore**: Secure storage
+- **Android Keystore**: Secure storage (if used)
 
 ### Navigation
 - **Navigation 3**: Compose navigation
 
 ### Other Libraries
-- **Firebase**: Analytics, Crashlytics, Messaging
+- **Firebase**: Analytics, Crashlytics, Config, Messaging
 - **Coil**: Image loading
-- **Lottie**: Animations
-- **Google Maps**: Maps integration
-- **MQTT**: Messaging protocol
+- **Splash Screen**: Core splash screen API
 
 ## 📝 Code Style Guidelines
 
@@ -589,3 +629,9 @@ Version information is managed in `gradle/libs.versions.toml`:
 - Always return `Result<T, E>`
 - Map errors to `UiText` in ViewModels
 - Emit errors via events, not state
+
+## 🔐 Security
+
+- Session management through `SessionService`
+- Secure token storage
+- User data persistence via DataStore
