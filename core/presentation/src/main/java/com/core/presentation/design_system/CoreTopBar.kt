@@ -26,7 +26,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.core.presentation.theme.theme.CoreTheme
+import com.core.presentation.theme.theme.ArchiyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -257,7 +257,7 @@ fun CoreLargeTopBar(
 @Preview(showBackground = true)
 @Composable
 private fun TopBarPreview() {
-    CoreTheme {
+    ArchiyTheme {
         CoreTopBar(
             modifier = Modifier.fillMaxWidth(),
             navigationIcon = Icons.Outlined.ArrowBackIosNew,
@@ -271,7 +271,7 @@ private fun TopBarPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun MediumTopBarPreview() {
-    CoreTheme {
+    ArchiyTheme {
         CoreMediumTopBar(
             modifier = Modifier.fillMaxWidth(),
             navigationIcon = Icons.Outlined.ArrowBackIosNew,
@@ -285,7 +285,7 @@ private fun MediumTopBarPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun LargeTopBarPreview() {
-    CoreTheme {
+    ArchiyTheme {
         CoreLargeTopBar(
             modifier = Modifier.fillMaxWidth(),
             navigationIcon = Icons.Outlined.ArrowBackIosNew,

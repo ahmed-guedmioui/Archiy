@@ -23,8 +23,7 @@ fun ErrorDialog(
     onDismiss: () -> Unit = {},
     primaryButtonText: String? = stringResource(R.string.ok),
     secondaryButtonText: String? = null,
-    primaryColor: Color = MaterialTheme.colorScheme.error,
-    onPrimaryColor: Color = MaterialTheme.colorScheme.onError
+    primaryColor: Color = MaterialTheme.colorScheme.error
 ) {
     if (errorMessage != null) {
         CoreAlertDialog(
@@ -36,8 +35,7 @@ fun ErrorDialog(
             onDismiss = onDismiss,
             primaryButtonText = primaryButtonText,
             secondaryButtonText = secondaryButtonText,
-            primaryColor = primaryColor,
-            onPrimaryColor = onPrimaryColor
+            primaryColor = primaryColor
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.auth.presentation.register
 
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -90,10 +91,14 @@ class RegisterViewModel(
             _state.update { it.copy(isRegistering = true) }
 
             registerUseCase(
-                username = _state.value.email.text.toString(),
+                username = _state.value.username.text.toString(),
                 email = _state.value.email.text.toString(),
                 password = _state.value.password.text.toString()
             ).onSuccess {
+                _state.value.username.clearText()
+                _state.value.email.clearText()
+                _state.value.password.clearText()
+
                 eventChannel.send(RegisterEvent.OnRegistered)
             }.onError { error ->
                 val message = when (error) {

@@ -12,7 +12,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.initialize
 import com.home.data.di.homeDataModule
 import com.home.presentation.di.homePresentationModule
-import com.profile.data.di.profileDataModule
+import com.profile.di.profilePresentationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -35,7 +35,7 @@ class App : Application() {
                 authPresentationModule,
                 homeDataModule,
                 homePresentationModule,
-                profileDataModule
+                profilePresentationModule
             )
         }
     }

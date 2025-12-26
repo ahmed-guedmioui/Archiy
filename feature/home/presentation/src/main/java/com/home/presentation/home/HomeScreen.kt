@@ -29,8 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.core.presentation.design_system.CoreScaffold
+import com.core.presentation.design_system.CoreTopBar
 import com.core.presentation.design_system.dialogs.ErrorDialog
-import com.core.presentation.theme.theme.CoreTheme
+import com.core.presentation.theme.theme.ArchiyTheme
 import com.core.presentation.util.ObserveAsEvent
 import com.home.domain.model.HomeItem
 import com.home.domain.model.dummyHomeItems
@@ -83,7 +84,12 @@ fun HomeScreen(
     onAction: (HomeAction) -> Unit
 ) {
     CoreScaffold(
-        withScrollBehavior = false,
+        topBar = { scrollBehavior ->
+            CoreTopBar(
+                scrollBehavior = scrollBehavior,
+                titleText = stringResource(R.string.home)
+            )
+        }
     ) { paddingValues ->
         if (state.isLoading && state.items.isEmpty()) {
             Box(
@@ -169,7 +175,7 @@ fun HomeItemCard(
 @Preview
 @Composable
 private fun Preview() {
-    CoreTheme {
+    ArchiyTheme {
         HomeScreen(
             state = HomeState(
                 items = dummyHomeItems

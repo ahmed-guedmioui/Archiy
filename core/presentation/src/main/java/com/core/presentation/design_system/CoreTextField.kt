@@ -44,7 +44,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.core.presentation.theme.theme.CoreTheme
+import com.core.presentation.theme.theme.ArchiyTheme
 
 @Composable
 fun CoreTextField(
@@ -98,7 +98,7 @@ fun CoreTextField(
                 Text(
                     text = title,
                     fontWeight = FontWeight.Medium,
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )
             }
@@ -207,7 +207,7 @@ fun CoreTextField(
 @Preview(showSystemUi = true)
 @Composable
 private fun TextFieldPreview() {
-    CoreTheme {
+    ArchiyTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()

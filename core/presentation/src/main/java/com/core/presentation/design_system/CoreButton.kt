@@ -30,7 +30,7 @@ fun CoreButton(
     style: TextStyle = MaterialTheme.typography.bodyLarge.copy(
         fontWeight = FontWeight.SemiBold
     ),
-    verticalPadding: Dp = 8.dp,
+    verticalPadding: Dp = 6.dp,
     textMaxLines: Int = 1,
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
     buttonColor: Color = MaterialTheme.colorScheme.primary,
@@ -83,7 +83,7 @@ fun CoreOutlinedButton(
     text: String? = null,
     isLoading: Boolean = false,
     enabled: Boolean = true,
-    verticalPadding: Dp = 8.dp,
+    verticalPadding: Dp = 6.dp,
     borderWidth: Dp = 1.dp,
     style: TextStyle = MaterialTheme.typography.bodyLarge.copy(
         fontWeight = FontWeight.SemiBold

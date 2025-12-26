@@ -9,12 +9,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,13 +26,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.core.presentation.R
-import com.core.presentation.design_system.CoreButton
-import com.core.presentation.design_system.CoreOutlinedButton
 import com.core.presentation.theme.theme.Preview
 
 @Composable
@@ -46,11 +43,9 @@ fun CoreAlertDialog(
     shape: Shape = MaterialTheme.shapes.large,
     onPrimary: () -> Unit = {},
     onDismiss: () -> Unit = {},
-    betweenButtonsPadding: Dp = 16.dp,
     primaryButtonText: String? = null,
     secondaryButtonText: String? = null,
     primaryColor: Color = MaterialTheme.colorScheme.primary,
-    onPrimaryColor: Color = MaterialTheme.colorScheme.onPrimary
 ) {
     Dialog(
         properties = DialogProperties(usePlatformDefaultWidth = false),
@@ -109,35 +104,32 @@ fun CoreAlertDialog(
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
+                    horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    CoreOutlinedButton(
-                        text = secondaryButtonText,
+                    TextButton(
                         onClick = { onDismiss() },
                         enabled = secondaryButtonText != null,
-                        verticalPadding = 8.dp,
-                        borderColor = primaryColor,
                         modifier = Modifier
-                            .weight(1f)
                             .alpha(if (secondaryButtonText != null) 1f else 0f)
-                    )
-
-                    if (betweenButtonsPadding != 0.dp) {
-                        Spacer(Modifier.width(betweenButtonsPadding))
+                    ) {
+                        Text(
+                            text = secondaryButtonText ?: "",
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
                     }
 
-                    CoreButton(
-                        text = primaryButtonText,
+                    TextButton(
                         onClick = { onPrimary() },
                         enabled = primaryButtonText != null,
-                        verticalPadding = 8.dp,
-                        buttonColor = primaryColor,
-                        textColor = onPrimaryColor,
                         modifier = Modifier
-                            .weight(1f)
                             .alpha(if (primaryButtonText != null) 1f else 0f)
-                    )
+                    ) {
+                        Text(
+                            text = primaryButtonText ?: "",
+                            color = primaryColor
+                        )
+                    }
                 }
             }
         }
@@ -155,8 +147,7 @@ private fun Preview() {
         onPrimary = {},
         onDismiss = {},
         primaryButtonText = stringResource(R.string.ok),
-        secondaryButtonText = null,
-        primaryColor = MaterialTheme.colorScheme.error,
-        onPrimaryColor = MaterialTheme.colorScheme.onError
+        secondaryButtonText = "No",
+        primaryColor = MaterialTheme.colorScheme.error
     )
 }

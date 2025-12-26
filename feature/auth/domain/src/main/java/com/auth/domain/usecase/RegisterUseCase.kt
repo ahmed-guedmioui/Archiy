@@ -23,9 +23,9 @@ class RegisterUseCase(
     }
 
     suspend operator fun invoke(
-        username: String = "",
-        email: String = "",
-        password: String = ""
+        username: String,
+        email: String,
+        password: String
     ): Result<Response<LoginData>, Error> {
 
         if (username.isEmpty()) {

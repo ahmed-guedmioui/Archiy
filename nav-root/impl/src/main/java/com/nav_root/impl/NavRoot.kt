@@ -32,7 +32,10 @@ fun NavRoot(
 
             entry<Route.Main> {
                 MainBottomNavBar(
-                    backStack = backStack
+                    onLogout = {
+                        backStack.remove(Route.Main)
+                        backStack.add(Route.Auth)
+                    }
                 )
             }
         }

@@ -1,15 +1,12 @@
 package com.profile.domain.usecase
 
-import com.core.domain.model.response.Response
 import com.core.domain.model.user.User
-import com.core.domain.util.result.DataError
-import com.core.domain.util.result.Result
-import com.profile.domain.repository.ProfileRepository
+import com.core.domain.service.session.SessionService
 
 class GetUserUseCase(
-    private val profileRepository: ProfileRepository
+    private val sessionService: SessionService
 ) {
-    suspend operator fun invoke(): Result<Response<User>, DataError> {
-        return profileRepository.getUser()
+    suspend operator fun invoke(): User? {
+        return sessionService.getUser()
     }
 }

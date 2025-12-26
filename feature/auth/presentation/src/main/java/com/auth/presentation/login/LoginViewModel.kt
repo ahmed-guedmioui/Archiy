@@ -1,5 +1,6 @@
 package com.auth.presentation.login
 
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -75,6 +76,9 @@ class LoginViewModel(
                 email = _state.value.email.text.toString(),
                 password = _state.value.password.text.toString()
             ).onSuccess {
+                _state.value.email.clearText()
+                _state.value.password.clearText()
+
                 eventChannel.send(LoginEvent.OnLoggedIn)
             }.onError { error ->
                 val message = when (error) {
