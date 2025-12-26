@@ -95,10 +95,15 @@ Archiy/
 │   │   ├── domain/               # Auth domain layer
 │   │   └── presentation/         # Auth UI
 │   │
-│   └── home/                     # Home feature
-│       ├── data/                 # Home data layer
-│       ├── domain/               # Home domain layer
-│       └── presentation/          # Home UI
+│   ├── home/                     # Home feature
+│   │   ├── data/                 # Home data layer
+│   │   ├── domain/               # Home domain layer
+│   │   └── presentation/         # Home UI
+│   │
+│   └── profile/                  # Profile feature
+│       ├── data/                 # Profile data layer
+│       ├── domain/               # Profile domain layer
+│       └── presentation/         # Profile UI
 │
 └── nav-root/                      # Navigation module
     ├── api/                       # Navigation API
@@ -184,11 +189,25 @@ Feature modules follow the same three-layer structure:
   - Compose screens (HomeScreen)
   - **Dependencies**: `core:presentation`, `core:domain`, `feature:home:domain`
 
+#### `feature:profile`
+- **`feature:profile:domain`**
+  - Use cases (GetUserUseCase, LogoutUseCase)
+  - **Dependencies**: `core:domain`
+
+- **`feature:profile:data`**
+  - Service implementations and DTOs
+  - **Dependencies**: `core:data`, `core:domain`, `feature:profile:domain`
+
+- **`feature:profile:presentation`**
+  - ViewModels (ProfileViewModel)
+  - Compose screens (ProfileScreen)
+  - **Dependencies**: `core:presentation`, `core:domain`, `feature:profile:domain`
+
 ### Navigation Module (`nav-root/`)
 - **Purpose**: Root navigation setup
 - **Contains**: 
   - Navigation graph and route definitions
-  - Main bottom navigation bar
+  - Main bottom navigation bar (Home, Profile)
   - Route definitions (Auth, Main, Home)
 
 ## 🔄 Data Flow
@@ -272,6 +291,10 @@ The project uses **Koin** for dependency injection. Modules are organized by lay
 - Home use cases
 - ViewModels
 
+**`profilePresentationModule`** (`feature:profile:presentation/di/`)
+- Profile use cases (GetUserUseCase, LogoutUseCase)
+- ViewModels (ProfileViewModel)
+
 ### Initialization
 
 Dependency injection is initialized in `App.kt`:
@@ -287,6 +310,7 @@ startKoin {
         authPresentationModule,
         homeDataModule,
         homePresentationModule,
+        profilePresentationModule,
     )
 }
 ```
@@ -373,132 +397,129 @@ ObserveAsEvent(viewModel.event) { event ->
 
 ## 🚀 Adding New Features
 
-To add a new feature (e.g., `profile`):
+To add a new feature (e.g., `settings`):
 
 ### 1. Create Feature Modules
 
 ```
 feature/
-└── profile/
+└── settings/
     ├── data/
     │   ├── build.gradle.kts
-    │   └── src/main/java/com/profile/data/
+    │   └── src/main/java/com/settings/data/
     ├── domain/
     │   ├── build.gradle.kts
-    │   └── src/main/java/com/profile/domain/
+    │   └── src/main/java/com/settings/domain/
     └── presentation/
         ├── build.gradle.kts
-        └── src/main/java/com/profile/presentation/
+        └── src/main/java/com/settings/presentation/
 ```
 
 ### 2. Update `settings.gradle.kts`
 
 ```kotlin
-include("feature:profile:data")
-include("feature:profile:domain")
-include("feature:profile:presentation")
+include("feature:settings:data")
+include("feature:settings:domain")
+include("feature:settings:presentation")
 ```
 
 ### 3. Create Domain Layer
 
-**`feature:profile:domain`**
+**`feature:settings:domain`**
 
 ```kotlin
 // Service interface
-interface ProfileService {
-    suspend fun getProfile(): Result<Profile, DataError.Remote>
+interface SettingsService {
+    suspend fun getSettings(): Result<Settings, DataError.Remote>
 }
 
 // Use case
-class GetProfileUseCase(
-    private val profileService: ProfileService
+class GetSettingsUseCase(
+    private val settingsService: SettingsService
 ) {
-    suspend operator fun invoke(): Result<Profile, Error> {
-        return profileService.getProfile()
+    suspend operator fun invoke(): Result<Settings, Error> {
+        return settingsService.getSettings()
     }
 }
 
 // Domain model
-data class Profile(
-    val id: Int,
-    val name: String,
-    val email: String
+data class Settings(
+    val theme: String,
+    val notifications: Boolean
 )
 ```
 
 ### 4. Create Data Layer
 
-**`feature:profile:data`**
+**`feature:settings:data`**
 
 ```kotlin
 // DTO
 @Serializable
-data class ProfileDto(
-    @SerialName("id") val id: Int,
-    @SerialName("name") val name: String,
-    @SerialName("email") val email: String
+data class SettingsDto(
+    @SerialName("theme") val theme: String,
+    @SerialName("notifications") val notifications: Boolean
 )
 
 // Mapper
-fun ProfileDto.toDomain(): Profile {
-    return Profile(
-        id = id,
-        name = name,
-        email = email
+fun SettingsDto.toDomain(): Settings {
+    return Settings(
+        theme = theme,
+        notifications = notifications
     )
 }
 
 // Service implementation
-class KtorProfileService(
+class KtorSettingsService(
     private val httpClient: KtorHttpClient
-) : ProfileService {
-    override suspend fun getProfile(): Result<Profile, DataError.Remote> {
-        return httpClient.get<ProfileDto>(HttpRoutes.PROFILE)
+) : SettingsService {
+    override suspend fun getSettings(): Result<Settings, DataError.Remote> {
+        return httpClient.get<SettingsDto>(HttpRoutes.SETTINGS)
             .map { it.toDomain() }
     }
 }
 
 // DI Module
-val profileDataModule = module {
-    factoryOf(::KtorProfileService).bind<ProfileService>()
+val settingsDataModule = module {
+    factoryOf(::KtorSettingsService).bind<SettingsService>()
 }
 ```
 
 ### 5. Create Presentation Layer
 
-**`feature:profile:presentation`**
+**`feature:settings:presentation`**
 
 ```kotlin
 // State
-data class ProfileState(
-    val profile: Profile? = null,
+data class SettingsState(
+    val settings: Settings? = null,
     val isLoading: Boolean = false
 )
 
 // Events
-sealed interface ProfileEvent {
-    data class OnError(val error: UiText) : ProfileEvent
+sealed interface SettingsEvent {
+    data class OnError(val error: UiText) : SettingsEvent
 }
 
 // ViewModel
-class ProfileViewModel(
-    private val getProfileUseCase: GetProfileUseCase
+class SettingsViewModel(
+    private val getSettingsUseCase: GetSettingsUseCase
 ) : ViewModel() {
-    private val _state = MutableStateFlow(ProfileState())
+    private val _state = MutableStateFlow(SettingsState())
     val state = _state.stateIn(...)
     
-    private val eventChannel = Channel<ProfileEvent>()
+    private val eventChannel = Channel<SettingsEvent>()
     val event = eventChannel.receiveAsFlow()
     
-    fun loadProfile() {
+    fun loadSettings() {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
-            getProfileUseCase()
-                .onSuccess { profile ->
-                    _state.update { it.copy(profile = profile, isLoading = false) }
+            getSettingsUseCase()
+                .onSuccess { settings ->
+                    _state.update { it.copy(settings = settings, isLoading = false) }
                 }
                 .onError { error ->
-                    eventChannel.send(ProfileEvent.OnError(error.toUiText()))
+                    eventChannel.send(SettingsEvent.OnError(error.toUiText()))
                     _state.update { it.copy(isLoading = false) }
                 }
         }
@@ -507,17 +528,17 @@ class ProfileViewModel(
 
 // Screen
 @Composable
-fun ProfileScreen(
-    viewModel: ProfileViewModel = koinViewModel()
+fun SettingsScreen(
+    viewModel: SettingsViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     // UI implementation
 }
 
 // DI Module
-val profilePresentationModule = module {
-    factoryOf(::GetProfileUseCase)
-    viewModelOf(::ProfileViewModel)
+val settingsPresentationModule = module {
+    factoryOf(::GetSettingsUseCase)
+    viewModelOf(::SettingsViewModel)
 }
 ```
 
@@ -534,8 +555,9 @@ startKoin {
         authPresentationModule,
         homeDataModule,
         homePresentationModule,
-        profileDataModule,  // Add this
-        profilePresentationModule,  // Add this
+        profilePresentationModule,
+        settingsDataModule,  // Add this
+        settingsPresentationModule,  // Add this
     )
 }
 ```
@@ -549,7 +571,7 @@ startKoin {
 sealed interface Route : NavKey {
     // ... existing routes
     @Serializable
-    data object Profile : Route
+    data object Settings : Route
 }
 ```
 
