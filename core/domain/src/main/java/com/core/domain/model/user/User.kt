@@ -5,3 +5,9 @@ data class User(
     val username: String,
     val email: String
 )
+
+val dummyUser = User(
+    id = "1",
+    username = "Alex",
+    email = "alex@email.com"
+)
