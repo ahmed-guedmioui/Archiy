@@ -22,6 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.auth.presentation.R
@@ -31,7 +32,7 @@ import com.core.presentation.design_system.CoreScaffold
 import com.core.presentation.design_system.CoreTextField
 import com.core.presentation.design_system.CoreTopBar
 import com.core.presentation.design_system.dialogs.ErrorDialog
-import com.core.presentation.theme.theme.CoreTheme
+import com.core.presentation.theme.theme.ArchiyTheme
 import com.core.presentation.theme.theme.Preview
 import com.core.presentation.util.ObserveAsEvent
 import org.koin.androidx.compose.koinViewModel
@@ -119,16 +120,17 @@ fun RegisterScreen(
                     hint = stringResource(R.string.username_example),
                 )
 
-                Spacer(Modifier.height(24.dp))
+                Spacer(Modifier.height(16.dp))
 
                 CoreTextField(
                     startIcon = Icons.Outlined.Email,
                     textFieldState = state.email,
                     title = stringResource(R.string.email),
                     hint = stringResource(R.string.example_email_com),
+                    keyBoardType = KeyboardType.Email
                 )
 
-                Spacer(Modifier.height(24.dp))
+                Spacer(Modifier.height(16.dp))
 
                 CorePasswordTextField(
                     textFieldState = state.password,
@@ -147,7 +149,7 @@ fun RegisterScreen(
                     isLoading = state.isRegistering,
                     enabled = state.canRegister,
                     onClick = {
-                        onAction(RegisterAction.OnBack)
+                        onAction(RegisterAction.OnRegister)
                     },
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -159,7 +161,7 @@ fun RegisterScreen(
 @Preview
 @Composable
 private fun Preview() {
-    CoreTheme {
+    ArchiyTheme {
         RegisterScreen(
             state = RegisterState(),
             onAction = {}

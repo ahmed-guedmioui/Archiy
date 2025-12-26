@@ -23,8 +23,7 @@ fun WarningDialog(
     onDismiss: () -> Unit = {},
     primaryButtonText: String? = stringResource(R.string.ok),
     secondaryButtonText: String? = null,
-    primaryColor: Color = CoreColor.warning,
-    onPrimaryColor: Color = CoreColor.onWarning
+    primaryColor: Color = CoreColor.warning
 ) {
     if (errorMessage != null) {
         CoreAlertDialog(
@@ -36,8 +35,7 @@ fun WarningDialog(
             onDismiss = onDismiss,
             primaryButtonText = primaryButtonText,
             secondaryButtonText = secondaryButtonText,
-            primaryColor = primaryColor,
-            onPrimaryColor = onPrimaryColor
+            primaryColor = primaryColor
         )
     }
 }

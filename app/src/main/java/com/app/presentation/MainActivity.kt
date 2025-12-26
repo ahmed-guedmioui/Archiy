@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.core.presentation.theme.theme.CoreTheme
+import com.core.presentation.theme.theme.ArchiyTheme
 import com.nav_root.impl.NavRoot
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
         }
 
         setContent {
-            CoreTheme {
+            ArchiyTheme {
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 isCheckingLogin = state.isCheckingLogin
 

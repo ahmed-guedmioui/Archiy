@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,17 +24,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.auth.presentation.R
 import com.core.presentation.design_system.CoreButton
-import com.core.presentation.design_system.CoreOutlinedButton
 import com.core.presentation.design_system.CorePasswordTextField
 import com.core.presentation.design_system.CoreScaffold
 import com.core.presentation.design_system.CoreTextField
+import com.core.presentation.design_system.CoreTopBar
 import com.core.presentation.design_system.dialogs.ErrorDialog
-import com.core.presentation.theme.theme.CoreTheme
+import com.core.presentation.theme.theme.ArchiyTheme
 import com.core.presentation.theme.theme.Preview
 import com.core.presentation.util.ObserveAsEvent
 import org.koin.androidx.compose.koinViewModel
@@ -83,7 +86,13 @@ fun LoginScreen(
     state: LoginState,
     onAction: (LoginAction) -> Unit
 ) {
-    CoreScaffold { paddingValues ->
+    CoreScaffold(
+        topBar = {
+            CoreTopBar(
+                titleText = stringResource(R.string.login),
+            )
+        }
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -109,6 +118,7 @@ fun LoginScreen(
                     startIcon = Icons.Outlined.Email,
                     title = stringResource(R.string.email),
                     hint = stringResource(R.string.example_email_com),
+                    keyBoardType = KeyboardType.Email
                 )
 
                 Spacer(Modifier.height(32.dp))
@@ -135,23 +145,24 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Spacer(Modifier.height(24.dp))
+                Spacer(Modifier.height(48.dp))
 
                 Text(
                     text = stringResource(R.string.don_t_have_an_account),
                     textAlign = TextAlign.Center
                 )
 
-                Spacer(Modifier.height(12.dp))
-
-                CoreOutlinedButton(
-                    text = stringResource(R.string.register),
-                    enabled = !state.isLoggingIn,
+                TextButton(
                     onClick = {
                         onAction(LoginAction.OnRegister)
                     },
-                    modifier = Modifier.fillMaxWidth()
-                )
+                    enabled = !state.isLoggingIn,
+                ) {
+                    Text(
+                        text = stringResource(R.string.register),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
             }
         }
     }
@@ -160,7 +171,7 @@ fun LoginScreen(
 @Preview
 @Composable
 private fun Preview() {
-    CoreTheme {
+    ArchiyTheme {
         LoginScreen(
             state = LoginState(),
             onAction = {}

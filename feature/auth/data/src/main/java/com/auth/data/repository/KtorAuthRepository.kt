@@ -64,7 +64,7 @@ class KtorAuthRepository(
                 data = LoginDataDto(
                     token = "some_token",
                     user = UserDto(
-                        id = "${username}_id",
+                        id = "id_${username}_id",
                         username = username,
                         email = email
                     )

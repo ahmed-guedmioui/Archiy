@@ -23,8 +23,7 @@ fun InfoDialog(
     onDismiss: () -> Unit = {},
     primaryButtonText: String? = stringResource(R.string.ok),
     secondaryButtonText: String? = null,
-    primaryColor: Color = MaterialTheme.colorScheme.primary,
-    onPrimaryColor: Color = MaterialTheme.colorScheme.primary
+    primaryColor: Color = MaterialTheme.colorScheme.primary
 ) {
     if (errorMessage != null) {
         CoreAlertDialog(
@@ -36,8 +35,7 @@ fun InfoDialog(
             onDismiss = onDismiss,
             primaryButtonText = primaryButtonText,
             secondaryButtonText = secondaryButtonText,
-            primaryColor = primaryColor,
-            onPrimaryColor = onPrimaryColor
+            primaryColor = primaryColor
         )
     }
 }

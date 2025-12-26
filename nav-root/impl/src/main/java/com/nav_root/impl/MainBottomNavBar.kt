@@ -23,11 +23,12 @@ import androidx.compose.ui.Modifier
 import com.core.presentation.design_system.BottomNavigationItem
 import com.core.presentation.design_system.CoreBottomBar
 import com.home.presentation.home.HomeNavigation
+import com.profile.presentation.ProfileScreenRoot
 
 
 @Composable
-fun <T : Any> MainBottomNavBar(
-    backStack: List<T>
+fun MainBottomNavBar(
+    onLogout: () -> Unit
 ) {
 
     var selectedItem by rememberSaveable {
@@ -87,6 +88,12 @@ fun <T : Any> MainBottomNavBar(
                 BackHandler {
                     onItemClick(0)
                 }
+
+                ProfileScreenRoot(
+                    onLogout = {
+                        onLogout()
+                    }
+                )
             }
         }
     }

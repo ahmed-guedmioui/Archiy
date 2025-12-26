@@ -88,7 +88,7 @@ private val darkScheme = darkColorScheme(
 )
 
 @Composable
-fun CoreTheme(
+fun ArchiyTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {

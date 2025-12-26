@@ -5,4 +5,5 @@ object HttpRoutes {
     const val REGISTER = "/example/register"
     const val ITEM_LIST = "/example/item-list"
     const val ITEM = "/example/item"
+    const val PROFILE = "/example/profile"
 }

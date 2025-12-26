@@ -3,4 +3,5 @@
     <string name="no_items_found">No items found</string>
     <string name="item_not_found">Item not found</string>
     <string name="item_details">Item details</string>
+    <string name="home">Home</string>
 </resources>

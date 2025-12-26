@@ -54,7 +54,10 @@ class HomeViewModel(
             getHomeItemsUseCase()
                 .onSuccess { items ->
                     _state.update {
-                        it.copy(items = items.data ?: emptyList())
+                        it.copy(
+                            items = items.data ?: emptyList(),
+                            isLoading = false
+                        )
                     }
                 }
                 .onError { error ->
@@ -63,10 +66,9 @@ class HomeViewModel(
                         else -> UiText.Resource(com.core.presentation.R.string.error_unknown)
                     }
 
+                    _state.update { it.copy(isLoading = false) }
                     eventChannel.send(HomeEvent.OnError(message))
                 }
-
-            _state.update { it.copy(isLoading = false) }
         }
     }
 }
