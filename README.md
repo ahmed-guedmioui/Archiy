@@ -2,6 +2,9 @@
 
 Archiy is an Android application built with Clean Architecture principles, following a multi-module structure for scalability and maintainability.
 
+<img src="https://github.com/user-attachments/assets/002de855-0493-4d99-a703-85872f57d6c1" width="800">
+<img src="https://github.com/user-attachments/assets/fa4edad5-789d-45fe-9e98-0fe3a14c5a8d" width="800">
+
 ## 📋 Table of Contents
 
 - [Architecture](#architecture)
