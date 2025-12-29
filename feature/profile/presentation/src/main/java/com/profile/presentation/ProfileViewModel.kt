@@ -50,7 +50,7 @@ class ProfileViewModel(
     private fun logout() {
         viewModelScope.launch {
             logoutUseCase()
-            eventChannel.send(ProfileEvent.Logout)
+            eventChannel.trySend(ProfileEvent.Logout)
         }
     }
 
@@ -67,7 +67,7 @@ class ProfileViewModel(
                 }
             } else {
                 _state.update { it.copy(isLoading = false) }
-                eventChannel.send(
+                eventChannel.trySend(
                     ProfileEvent.OnError(
                         UiText.Resource(R.string.could_not_load_profile)
                     )

@@ -17,9 +17,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -30,7 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.core.presentation.design_system.CoreScaffold
 import com.core.presentation.design_system.CoreTopBar
-import com.core.presentation.design_system.dialogs.ErrorDialog
+import com.core.presentation.design_system.dialogs.AlertDialog
+import com.core.presentation.design_system.dialogs.AlertDialogType
 import com.core.presentation.theme.theme.ArchiyTheme
 import com.core.presentation.util.ObserveAsEvent
 import com.home.domain.model.HomeItem
@@ -45,25 +43,21 @@ fun HomeScreenRoot(
 ) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
-    var errorMessage: String? by remember { mutableStateOf(null) }
 
     ObserveAsEvent(viewModel.event) { event ->
         when (event) {
             is HomeEvent.OnError -> {
-                errorMessage = event.error.asString(context)
+                AlertDialog.show(
+                    AlertDialogType.ERROR, event.error.asString(context)
+                )
             }
 
             is HomeEvent.OnErrorText -> {
-                errorMessage = event.errorText
+                AlertDialog.show(
+                    AlertDialogType.ERROR, event.errorText
+                )
             }
         }
-    }
-
-    errorMessage?.let { message ->
-        val dismiss = { errorMessage = null }
-        ErrorDialog(
-            errorMessage = message, onDismiss = dismiss, onPrimary = dismiss
-        )
     }
 
     HomeScreen(

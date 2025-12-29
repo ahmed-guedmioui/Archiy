@@ -79,7 +79,7 @@ class LoginViewModel(
                 _state.value.email.clearText()
                 _state.value.password.clearText()
 
-                eventChannel.send(LoginEvent.OnLoggedIn)
+                eventChannel.trySend(LoginEvent.OnLoggedIn)
             }.onError { error ->
                 val message = when (error) {
                     is LoginUseCase.LoginError -> {
@@ -102,7 +102,7 @@ class LoginViewModel(
                     }
                 }
 
-                eventChannel.send(LoginEvent.OnError(message))
+                eventChannel.trySend(LoginEvent.OnError(message))
             }
 
             _state.update { it.copy(isLoggingIn = false) }

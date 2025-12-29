@@ -67,7 +67,7 @@ class HomeViewModel(
                     }
 
                     _state.update { it.copy(isLoading = false) }
-                    eventChannel.send(HomeEvent.OnError(message))
+                    eventChannel.trySend(HomeEvent.OnError(message))
                 }
         }
     }

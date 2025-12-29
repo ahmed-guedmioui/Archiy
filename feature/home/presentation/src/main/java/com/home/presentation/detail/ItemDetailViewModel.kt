@@ -48,7 +48,7 @@ class ItemDetailViewModel(
                     val item = response.data
                     if (item == null) {
                         val message = UiText.Resource(R.string.item_not_found)
-                        eventChannel.send(ItemDetailEvent.OnError(message))
+                        eventChannel.trySend(ItemDetailEvent.OnError(message))
                     } else {
                         _state.update {
                             it.copy(item = item)
@@ -61,7 +61,7 @@ class ItemDetailViewModel(
                         else -> UiText.Resource(com.core.presentation.R.string.error_unknown)
                     }
 
-                    eventChannel.send(ItemDetailEvent.OnError(message))
+                    eventChannel.trySend(ItemDetailEvent.OnError(message))
                 }
 
             _state.update { it.copy(isLoading = false) }

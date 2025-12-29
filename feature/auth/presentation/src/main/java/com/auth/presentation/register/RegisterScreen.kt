@@ -13,9 +13,6 @@ import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -31,7 +28,8 @@ import com.core.presentation.design_system.CorePasswordTextField
 import com.core.presentation.design_system.CoreScaffold
 import com.core.presentation.design_system.CoreTextField
 import com.core.presentation.design_system.CoreTopBar
-import com.core.presentation.design_system.dialogs.ErrorDialog
+import com.core.presentation.design_system.dialogs.AlertDialog
+import com.core.presentation.design_system.dialogs.AlertDialogType
 import com.core.presentation.theme.theme.ArchiyTheme
 import com.core.presentation.theme.theme.Preview
 import com.core.presentation.util.ObserveAsEvent
@@ -45,7 +43,6 @@ fun RegisterScreenRoot(
 ) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
-    var errorMessage: String? by remember { mutableStateOf(null) }
 
     ObserveAsEvent(viewModel.event) { event ->
         when (event) {
@@ -54,16 +51,11 @@ fun RegisterScreenRoot(
             }
 
             is RegisterEvent.OnError -> {
-                errorMessage = event.error.asString(context)
+                AlertDialog.show(
+                    AlertDialogType.ERROR, event.error.asString(context)
+                )
             }
         }
-    }
-
-    errorMessage?.let { message ->
-        val dismiss = { errorMessage = null }
-        ErrorDialog(
-            errorMessage = message, onDismiss = dismiss, onPrimary = dismiss
-        )
     }
 
     RegisterScreen(

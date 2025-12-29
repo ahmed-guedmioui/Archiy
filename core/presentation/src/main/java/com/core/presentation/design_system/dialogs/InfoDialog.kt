@@ -27,7 +27,7 @@ fun InfoDialog(
 ) {
     if (errorMessage != null) {
         CoreAlertDialog(
-            modifier = modifier.padding(horizontal = 16.dp),
+            modifier = modifier.padding(horizontal = 24.dp),
             icon = icon,
             title = title,
             description = errorMessage,

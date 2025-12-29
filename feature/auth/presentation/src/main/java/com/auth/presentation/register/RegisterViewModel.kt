@@ -99,7 +99,7 @@ class RegisterViewModel(
                 _state.value.email.clearText()
                 _state.value.password.clearText()
 
-                eventChannel.send(RegisterEvent.OnRegistered)
+                eventChannel.trySend(RegisterEvent.OnRegistered)
             }.onError { error ->
                 val message = when (error) {
                     is RegisterUseCase.RegisterError -> {
@@ -123,7 +123,7 @@ class RegisterViewModel(
                     }
                 }
 
-                eventChannel.send(RegisterEvent.OnError(message))
+                eventChannel.trySend(RegisterEvent.OnError(message))
             }
 
             _state.update { it.copy(isRegistering = false) }

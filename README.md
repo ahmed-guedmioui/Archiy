@@ -519,7 +519,7 @@ class SettingsViewModel(
                     _state.update { it.copy(settings = settings, isLoading = false) }
                 }
                 .onError { error ->
-                    eventChannel.send(SettingsEvent.OnError(error.toUiText()))
+                    eventChannel.trySend(SettingsEvent.OnError(error.toUiText()))
                     _state.update { it.copy(isLoading = false) }
                 }
         }
