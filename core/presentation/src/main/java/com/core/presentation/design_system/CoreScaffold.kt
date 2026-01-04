@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
+import com.core.presentation.extensions.animatedAppearance
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -51,9 +52,14 @@ fun CoreScaffold(
     content: @Composable (PaddingValues) -> Unit
 ) {
 
-    val scrollModifier =
-        if (withScrollBehavior) modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-        else modifier
+    val scaffoldModifier = if (withScrollBehavior) {
+        modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection)
+            .animatedAppearance()
+    } else {
+        modifier
+            .animatedAppearance()
+    }
 
     if (onPullToRefresh != null) {
         val refreshScope = rememberCoroutineScope()
@@ -67,12 +73,12 @@ fun CoreScaffold(
             refreshing = false
         }
 
-        val state = rememberPullToRefreshState()
+        val pullToRefreshState = rememberPullToRefreshState()
         Scaffold(
             containerColor = containerColor,
             contentWindowInsets = contentWindowInsets,
             snackbarHost = snackbarHost,
-            modifier = scrollModifier,
+            modifier = scaffoldModifier,
             topBar = {
                 Column {
                     topBar(scrollBehavior)
@@ -87,7 +93,7 @@ fun CoreScaffold(
         ) { padding ->
             PullToRefreshBox(
                 isRefreshing = refreshing,
-                state = state,
+                state = pullToRefreshState,
                 onRefresh = ::refresh,
                 indicator = {
                     Column(
@@ -97,7 +103,7 @@ fun CoreScaffold(
                             modifier = Modifier
                                 .size(35.dp),
                             isRefreshing = refreshing,
-                            state = state,
+                            state = pullToRefreshState,
                             containerColor = MaterialTheme.colorScheme.background,
                             color = MaterialTheme.colorScheme.primary,
                         )
@@ -112,7 +118,7 @@ fun CoreScaffold(
             containerColor = containerColor,
             contentWindowInsets = contentWindowInsets,
             snackbarHost = snackbarHost,
-            modifier = scrollModifier,
+            modifier = scaffoldModifier,
             topBar = {
                 topBar(scrollBehavior)
                 if (showTopBarHorizontalDivider) {

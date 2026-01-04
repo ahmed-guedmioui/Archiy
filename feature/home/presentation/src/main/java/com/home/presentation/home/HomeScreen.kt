@@ -29,6 +29,7 @@ import com.core.presentation.design_system.CoreScaffold
 import com.core.presentation.design_system.CoreTopBar
 import com.core.presentation.design_system.dialogs.AlertDialog
 import com.core.presentation.design_system.dialogs.AlertDialogType
+import com.core.presentation.extensions.animatedAppearance
 import com.core.presentation.theme.theme.ArchiyTheme
 import com.core.presentation.util.ObserveAsEvent
 import com.home.domain.model.HomeItem
@@ -97,6 +98,7 @@ fun HomeScreen(
         } else {
             LazyColumn(
                 modifier = Modifier
+                    .animatedAppearance()
                     .fillMaxSize()
                     .padding(horizontal = 16.dp),
                 contentPadding = PaddingValues(
