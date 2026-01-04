@@ -1,5 +1,6 @@
 package com.home.presentation.detail
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,7 @@ import com.core.presentation.design_system.CoreScaffold
 import com.core.presentation.design_system.CoreTopBar
 import com.core.presentation.design_system.dialogs.AlertDialog
 import com.core.presentation.design_system.dialogs.AlertDialogType
+import com.core.presentation.extensions.animatedAppearance
 import com.core.presentation.util.ObserveAsEvent
 import com.home.presentation.R
 import org.koin.androidx.compose.koinViewModel
@@ -87,22 +89,23 @@ fun ItemDetailScreen(
             )
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp)
-        ) {
-            if (state.isLoading) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            } else {
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .animatedAppearance()
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(16.dp)
+            ) {
                 state.item?.let { item ->
                     Text(
                         text = item.title,

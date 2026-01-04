@@ -25,19 +25,17 @@ fun ErrorDialog(
     secondaryButtonText: String? = null,
     primaryColor: Color = MaterialTheme.colorScheme.error
 ) {
-    if (errorMessage != null) {
-        CoreAlertDialog(
-            modifier = modifier.padding(horizontal = 24.dp),
-            icon = icon,
-            title = title,
-            description = errorMessage,
-            onPrimary = onPrimary,
-            onDismiss = onDismiss,
-            primaryButtonText = primaryButtonText,
-            secondaryButtonText = secondaryButtonText,
-            primaryColor = primaryColor
-        )
-    }
+    CoreAlertDialog(
+        modifier = modifier.padding(horizontal = 24.dp),
+        icon = icon,
+        title = title,
+        description = errorMessage,
+        onPrimary = onPrimary,
+        onDismiss = onDismiss,
+        primaryButtonText = primaryButtonText,
+        secondaryButtonText = secondaryButtonText,
+        primaryColor = primaryColor
+    )
 }
 
 @Preview

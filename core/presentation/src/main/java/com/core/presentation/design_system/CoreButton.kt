@@ -1,5 +1,6 @@
 package com.core.presentation.design_system
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -52,7 +53,8 @@ fun CoreButton(
     ) {
         Box(
             modifier = Modifier
-                .padding(verticalPadding),
+                .padding(verticalPadding)
+                .animateContentSize(),
             contentAlignment = Alignment.Center
         ) {
             if (isLoading) {
@@ -108,7 +110,9 @@ fun CoreOutlinedButton(
         modifier = modifier
     ) {
         Box(
-            modifier = Modifier.padding(verticalPadding),
+            modifier = Modifier
+                .padding(verticalPadding)
+                .animateContentSize(),
             contentAlignment = Alignment.Center
         ) {
             if (isLoading) {

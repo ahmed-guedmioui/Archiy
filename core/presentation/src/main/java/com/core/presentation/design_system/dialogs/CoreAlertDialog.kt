@@ -1,7 +1,6 @@
 package com.core.presentation.design_system.dialogs
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,12 +23,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.core.presentation.R
+import com.core.presentation.extensions.animatedAppearance
 import com.core.presentation.theme.theme.Preview
 
 @Composable
@@ -47,23 +46,19 @@ fun CoreAlertDialog(
     secondaryButtonText: String? = null,
     primaryColor: Color = MaterialTheme.colorScheme.primary,
 ) {
+
     Dialog(
         properties = DialogProperties(usePlatformDefaultWidth = false),
-        onDismissRequest = onDismiss
+        onDismissRequest = onDismiss,
     ) {
         Column(
             modifier = modifier
+                .animatedAppearance()
                 .clip(shape)
                 .background(MaterialTheme.colorScheme.surface)
-                .border(
-                    width = 1.dp,
-                    color = primaryColor,
-                    shape = shape
-                )
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -81,9 +76,7 @@ fun CoreAlertDialog(
                     Text(
                         text = title,
                         textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.SemiBold
-                        ),
+                        style = MaterialTheme.typography.titleMedium,
                         color = titleColor
                     )
                 }
