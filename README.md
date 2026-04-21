@@ -613,7 +613,7 @@ Version information is managed in `gradle/libs.versions.toml`:
 ### Architecture & DI
 - **Clean Architecture**: Architecture pattern
 - **Koin**: Dependency injection
-- **MVVM**: Presentation pattern
+- **MVI**: Presentation pattern
 
 ### Networking
 - **Ktor**: HTTP client
